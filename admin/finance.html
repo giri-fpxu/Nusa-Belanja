@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan & Verifikasi — Nusa Belanja Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body data-title="Keuangan & Verifikasi" data-sub="Verifikasi hak akses bulanan oleh pemilik data" data-access="finance-admin">
+<div class="admin-shell" id="shell"></div>
+<script src="../js/data.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+function onAdminReady(user) {
+  const { esc, accounts, read, write, actor, addLog, toast } = Admin;
+  const page = document.getElementById('page');
+  const PERIOD = 'Oktober 2026';
+
+  function render() {
+    const signed = read('nb_verified', null);
+    const accs = accounts();
+    page.innerHTML = `
+      <div class="page-stack">
+        <div class="card">
+          <div class="card-header">
+            <h3>Verifikasi Hak Akses Bulanan</h3>
+            <span class="pill pill-blue">${PERIOD}</span>
+          </div>
+          <div class="card-section">
+            <p class="muted-block">Batas verifikasi hari ini. Dengan menandatangani, pemilik data menyatakan daftar ini sudah diperiksa.</p>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Akun</th><th>Nama</th><th>Dept</th><th>Hak akses</th><th>Status</th></tr></thead>
+              <tbody>
+                ${accs.map(a => `
+                  <tr>
+                    <td><strong>${esc(a.username)}</strong></td>
+                    <td>${esc(a.name)}</td>
+                    <td>${esc(a.dept)}</td>
+                    <td><div class="pill-list">${(a.access || []).map(k => `<span class="pill pill-gray">${esc(k)}</span>`).join('')}</div></td>
+                    <td><span class="pill pill-green">Aktif</span></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table></div>
+          </div>
+          <div class="card-footer">
+            ${signed
+              ? `<span class="pill pill-green">Ditandatangani ${esc(signed.by)} · ${esc(signed.at)}</span>`
+              : '<span class="muted">Belum ditandatangani</span>'}
+            <button class="btn btn-primary btn-sm" id="sign" ${signed ? 'disabled' : ''}>Tanda tangani verifikasi</button>
+          </div>
+        </div>
+      </div>`;
+
+    const btn = document.getElementById('sign');
+    if (btn && !signed) btn.onclick = sign;
+  }
+
+  function sign() {
+    const at = new Date().toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    write('nb_verified', { by: user.name, at });
+    addLog({ ...actor(user), action: 'Tanda tangan verifikasi akses', target: `Daftar Verifikasi Akses ${PERIOD}`, type: 'finance', level: 'info' });
+    toast('Verifikasi ditandatangani.', 'success');
+    render();
+  }
+
+  render();
+}
+</script>
+</body>
+</html>

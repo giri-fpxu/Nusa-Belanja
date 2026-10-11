@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nusa Belanja — Kopi Nusantara Pilihan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 28px; }
+    .hero-stat  { text-align: left; }
+    .hero-stat .num { font-size: 1.6rem; font-weight: 800; color: #fff; }
+    .hero-stat .lbl { font-size: .75rem; color: rgba(255,255,255,.6); }
+    .testimonials { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 32px; }
+    .testi-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .testi-stars { color: #f59e0b; font-size: .9rem; margin-bottom: 8px; }
+    .testi-text  { font-size: .85rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+    .testi-name  { font-size: .82rem; font-weight: 700; color: var(--brown-900); }
+    .testi-loc   { font-size: .75rem; color: var(--text-muted); }
+    .search-bar  { display: flex; gap: 8px; margin-bottom: 24px; }
+    .search-bar input { flex: 1; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--r); font-size: .9rem; background: var(--white); }
+    .search-bar input:focus { outline: none; border-color: var(--brown-500); }
+    .result-count { font-size: .82rem; color: var(--text-muted); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo-icon">☕</div>
+      <div>
+        <span class="brand-name">Nusa Belanja</span>
+        <span class="brand-sub">PT Nusa Belanja · Kopi Nusantara</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Beranda</a>
+      <a href="catalog.html">Katalog</a>
+      <a href="#fitur">Layanan</a>
+      <a href="#testimonial">Ulasan</a>
+    </div>
+    <div class="nav-actions">
+      <a href="admin/login.html" class="btn btn-outline btn-sm">🔐 Admin</a>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Keranjang
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <span class="hero-tag">🗺 Dari Sabang sampai Merauke</span>
+        <h1>Kopi Nusantara<br>Langsung ke Tanganmu</h1>
+        <p>Single origin pilihan dari Gayo, Toraja, Flores, Bali, Papua, dan lebih banyak lagi. Dikirim segar setiap hari.</p>
+        <div class="hero-actions">
+          <a href="catalog.html" class="btn btn-primary">Lihat Katalog →</a>
+          <a href="#fitur" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.4)">Tentang Kami</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num">50+</div>
+            <div class="lbl">Varian Kopi</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">12.400+</div>
+            <div class="lbl">Pelanggan</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">4.8 ★</div>
+            <div class="lbl">Rating Toko</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">🫘</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature strip ──────────────────────────────────────────── -->
+<section class="features" id="fitur">
+  <div class="container">
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <div>
+          <h4>Gratis Ongkir</h4>
+          <p>Pembelian di atas Rp150.000</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌿</div>
+        <div>
+          <h4>Single Origin</h4>
+          <p>Langsung dari petani lokal</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">☕</div>
+        <div>
+          <h4>Roast Fresh</h4>
+          <p>Roasting 2 hari sebelum kirim</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📦</div>
+        <div>
+          <h4>Langganan Mudah</h4>
+          <p>Ganti varian setiap bulan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Category strip ─────────────────────────────────────────── -->
+<section class="categories">
+  <div class="container">
+    <div class="cat-list">
+      <div class="cat-chip active" data-cat="all">Semua Produk</div>
+      <div class="cat-chip" data-cat="biji-kopi">☕ Biji Kopi</div>
+      <div class="cat-chip" data-cat="paket-kopi">📦 Paket Kopi</div>
+      <div class="cat-chip" data-cat="alat-seduh">⚙️ Alat Seduh</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Products ───────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="flex" style="justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2>Produk Unggulan</h2>
+          <p>Koleksi terpilih dari berbagai penjuru Nusantara</p>
+        </div>
+        <a href="catalog.html" class="btn btn-outline btn-sm">Lihat semua →</a>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Cari produk, asal daerah, metode proses…" />
+    </div>
+    <div class="result-count" id="result-count"></div>
+    <div class="grid-4" id="product-grid"></div>
+  </div>
+</section>
+
+<!-- ── Promo Banner ───────────────────────────────────────────── -->
+<section class="section-sm">
+  <div class="container">
+    <div class="promo-banner">
+      <div>
+        <span class="promo-badge">🎉 Promo Gajian</span>
+        <h2>Diskon 10% Paket Premium</h2>
+        <p>Gunakan kode <strong>GAJIAN10</strong> · Berlaku s.d. 31 Oktober 2026</p>
+      </div>
+      <a href="catalog.html?cat=paket-kopi" class="btn btn-primary" style="white-space:nowrap;flex-shrink:0">Klaim Sekarang</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ───────────────────────────────────────────── -->
+<section class="section" id="testimonial" style="background:var(--cream-2)">
+  <div class="container">
+    <div class="section-header">
+      <h2>Apa Kata Pelanggan</h2>
+      <p>Lebih dari 12.000 pelanggan puas di seluruh Indonesia</p>
+    </div>
+    <div class="testimonials">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Gayo Arabika-nya luar biasa! Body kuat, asamnya seimbang, dan aromanya bikin pagi jadi lebih hidup."</p>
+        <div class="testi-name">Riana W.</div>
+        <div class="testi-loc">Bandung · Pelanggan Langganan</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Paket Starter-nya bagus banget buat yang baru belajar. Panduan seduhnya jelas dan kopinya enak semua."</p>
+        <div class="testi-name">Bagas R.</div>
+        <div class="testi-loc">Surabaya · Baru Bergabung</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p class="testi-text">"Pengiriman cepat, packaging aman. Flores Natural jadi favorit di kantor. Pesan lagi pasti."</p>
+        <div class="testi-name">Nita A.</div>
+        <div class="testi-loc">Jakarta · 3x Pembelian</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Hand grinder-nya worth it banget. Hasil gilingannya konsisten, cocok untuk V60 saya."</p>
+        <div class="testi-name">Dimas P.</div>
+        <div class="testi-loc">Yogyakarta · Enthusiast</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-name">☕ Nusa Belanja</span>
+        <p>Toko kopi online terpercaya yang menghubungkan petani lokal dengan penikmat kopi di seluruh Indonesia.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produk</h4>
+        <ul>
+          <li><a href="catalog.html?cat=biji-kopi">Biji Kopi</a></li>
+          <li><a href="catalog.html?cat=paket-kopi">Paket Kopi</a></li>
+          <li><a href="catalog.html?cat=alat-seduh">Alat Seduh</a></li>
+          <li><a href="catalog.html">Semua Katalog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Layanan</h4>
+        <ul>
+          <li><a href="#">Langganan</a></li>
+          <li><a href="#">Pemesanan Massal</a></li>
+          <li><a href="#">Konsultasi Kopi</a></li>
+          <li><a href="#">Kemitraan Petani</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Bantuan</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Kebijakan Pengiriman</a></li>
+          <li><a href="#">Pengembalian Barang</a></li>
+          <li><a href="#">Hubungi Kami</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 PT Nusa Belanja (Fiktif — untuk keperluan produksi film). Semua data bersifat fiktif.</span>
+      <span>Dibuat oleh Tim 404 Club</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Cart Drawer ─────────────────────────────────────────────── -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="drawer-header">
+    <h3>🛒 Keranjang Belanja</h3>
+    <button class="drawer-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+  <div class="drawer-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-value" id="cart-total-val">Rp0</span>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="showToast('Fitur checkout belum tersedia di demo ini.','')">Lanjut ke Pembayaran</button>
+  </div>
+</div>
+
+<!-- ── Toast container ─────────────────────────────────────────── -->
+<div id="toast-container"></div>
+
+<script src="js/data.js"></script>
+<script>
+  let activeFilter = 'all';
+
+  function applyFilter() {
+    const q = document.getElementById('search-input').value.trim().toLowerCase();
+    let list = activeFilter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === activeFilter);
+    if (q) {
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q) ||
+        (p.tags || []).some(t => t.includes(q))
+      );
+    }
+    // Show only first 8 on homepage
+    const shown = list.slice(0, 8);
+    renderProducts(shown, 'product-grid');
+    document.getElementById('result-count').textContent =
+      shown.length < list.length
+        ? `Menampilkan ${shown.length} dari ${list.length} produk`
+        : `${list.length} produk ditemukan`;
+  }
+
+  document.querySelectorAll('.cat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.cat;
+      applyFilter();
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', applyFilter);
+
+  // Check URL param for category
+  const urlCat = new URLSearchParams(location.search).get('cat');
+  if (urlCat) {
+    activeFilter = urlCat;
+    document.querySelectorAll('.cat-chip').forEach(c => {
+      c.classList.toggle('active', c.dataset.cat === urlCat);
+    });
+  }
+
+  applyFilter();
+</script>
+</body>
+</html>

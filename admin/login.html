@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin — Nusa Belanja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">☕</div>
+      <h1>Nusa Belanja</h1>
+      <p>Sistem Administrasi Internal</p>
+    </div>
+    <div class="login-error" id="login-error">Username atau kata sandi salah.</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="contoh: helsa.finance" autocomplete="username" />
+    </div>
+    <div class="form-group">
+      <label>Kata Sandi</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:.83rem;color:var(--text-muted);cursor:pointer">
+        <input type="checkbox" id="show-pass"> Tampilkan kata sandi
+      </label>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Masuk →</button>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:10px;font-weight:600">Akun Demo (klik untuk isi otomatis):</p>
+      <div id="demo-accounts" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ACCOUNTS = [
+    { username: 'aswin.finance',  password: 'admin123', name: 'Aswin Hartono',   role: 'Kepala Keuangan',  dept: 'Finance',   access: ['finance-admin','price-settings','user-management','access-log'] },
+    { username: 'giri.it',        password: 'admin123', name: 'Giri Santoso',    role: 'IT Admin',         dept: 'IT',        access: ['user-management','access-log','price-settings'] },
+    { username: 'callista.hr',    password: 'admin123', name: 'Callista Putri',  role: 'Staff HRD',        dept: 'HRD',       access: ['user-management','access-log'] },
+    { username: 'helsa.marketing',password: 'admin123', name: 'Helsa Maharani',  role: 'Staff Marketing',  dept: 'Marketing', access: ['marketing-dashboard'] },
+    // Helsa dengan akses Finance Admin lama (SKENARIO FILM)
+    { username: 'helsa.finance',  password: 'admin123', name: 'Helsa Maharani',  role: 'Staff Marketing',  dept: 'Marketing', access: ['marketing-dashboard','finance-admin','price-settings'], note: '⚠ Akses Finance belum dicabut' },
+  ];
+
+  // Data awal akun hanya ditulis sekali; perubahan hak akses dari panel admin tidak boleh tertimpa.
+  if (!localStorage.getItem('nb_accounts')) localStorage.setItem('nb_accounts', JSON.stringify(ACCOUNTS));
+
+  const demoEl = document.getElementById('demo-accounts');
+  ACCOUNTS.forEach(acc => {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'background:#f5f4f2;border:1px solid #e4ddd6;border-radius:6px;padding:8px 12px;cursor:pointer;text-align:left;font-family:inherit;transition:background .15s;display:flex;align-items:center;justify-content:space-between;gap:8px';
+    btn.innerHTML = `<div>
+      <span style="font-size:.82rem;font-weight:700;color:#2c1a0e;display:block">${acc.name}</span>
+      <span style="font-size:.73rem;color:#6b6560">${acc.role} · ${acc.username}</span>
+    </div>
+    ${acc.note ? `<span style="font-size:.65rem;background:#fef9ec;border:1px solid #f0c060;color:#856404;padding:2px 7px;border-radius:100px">${acc.note}</span>` : ''}`;
+    btn.addEventListener('mouseenter', () => btn.style.background = '#e9e6e2');
+    btn.addEventListener('mouseleave', () => btn.style.background = '#f5f4f2');
+    btn.onclick = () => {
+      document.getElementById('username').value = acc.username;
+      document.getElementById('password').value = acc.password;
+    };
+    demoEl.appendChild(btn);
+  });
+
+  document.getElementById('show-pass').addEventListener('change', function () {
+    document.getElementById('password').type = this.checked ? 'text' : 'password';
+  });
+
+  document.getElementById('password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogin() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    const accounts = JSON.parse(localStorage.getItem('nb_accounts') || '[]');
+    const acc = accounts.find(a => a.username === u && a.password === p);
+    if (acc) {
+      localStorage.setItem('nb_current_user', JSON.stringify(acc));
+      // Log login event
+      const logs = JSON.parse(localStorage.getItem('nb_access_logs') || '[]');
+      logs.unshift({ time: new Date().toLocaleTimeString('id-ID'), date: new Date().toLocaleDateString('id-ID'), user: acc.username, name: acc.name, dept: acc.dept, action: 'Login berhasil', target: 'Sistem Admin', type: 'auth', level: 'info' });
+      localStorage.setItem('nb_access_logs', JSON.stringify(logs.slice(0, 100)));
+      window.location.href = 'dashboard.html';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
